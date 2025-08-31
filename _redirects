@@ -1,0 +1,19 @@
+# Cloudflare Pages redirects and rewrites
+
+# SPA fallback - redirect all non-file requests to index.html
+/*    /index.html   200
+
+# Force HTTPS
+http://dhatrak.com/*    https://dhatrak.com/:splat    301!
+http://www.dhatrak.com/*    https://dhatrak.com/:splat    301!
+
+# Redirect www to non-www
+https://www.dhatrak.com/*    https://dhatrak.com/:splat    301!
+
+# Security headers
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

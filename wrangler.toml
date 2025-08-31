@@ -1,0 +1,23 @@
+# Cloudflare Pages configuration
+name = "vinit-dhatrak-portfolio"
+compatibility_date = "2024-01-01"
+
+[env.production]
+route = "dhatrak.com/*"
+
+[env.production.vars]
+ENVIRONMENT = "production"
+
+[build]
+command = ""
+cwd = ""
+watch_dir = ""
+
+# Custom domains
+[[route]]
+pattern = "dhatrak.com"
+custom_domain = true
+
+[[route]]
+pattern = "*.dhatrak.com"
+custom_domain = true

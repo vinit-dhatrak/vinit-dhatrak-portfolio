@@ -1,0 +1,60 @@
+{
+  "name": "vinit-dhatrak-portfolio",
+  "version": "1.0.0",
+  "description": "Minimalistic and modern portfolio website for Vinit Dhatrak",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 3000",
+    "build": "echo 'No build step required for static site'",
+    "deploy": "wrangler pages publish . --project-name=vinit-dhatrak-portfolio",
+    "preview": "wrangler pages dev .",
+    "lint:html": "htmlhint *.html",
+    "lint:css": "stylelint *.css",
+    "lint:js": "eslint *.js",
+    "format": "prettier --write *.{html,css,js,json,md}",
+    "serve": "python -m http.server 8080"
+  },
+  "keywords": [
+    "portfolio",
+    "personal-website",
+    "static-site",
+    "cloudflare-pages",
+    "javascript",
+    "css",
+    "html",
+    "responsive",
+    "modern",
+    "minimalistic"
+  ],
+  "author": {
+    "name": "Vinit Dhatrak",
+    "email": "vinit.dhatrak@gmail.com",
+    "url": "https://dhatrak.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vinitdhatrak/portfolio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vinitdhatrak/portfolio/issues"
+  },
+  "homepage": "https://dhatrak.com",
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "htmlhint": "^1.1.4",
+    "prettier": "^3.0.0",
+    "stylelint": "^15.0.0",
+    "stylelint-config-standard": "^34.0.0",
+    "wrangler": "^3.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
