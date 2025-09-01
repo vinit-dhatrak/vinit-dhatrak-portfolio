@@ -22,19 +22,17 @@
     --shadow-color: rgba(0, 255, 136, 0.1);
     --nav-bg-rgb: 10, 10, 10;
     
-    /* Typography */
-    --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    /* Typography - System fonts for optimal performance */
+    --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
     
     /* Spacing */
     --section-padding: 6rem 0;
     --container-padding: 0 2rem;
     --border-radius: 0.5rem;
     
-    /* Animations */
-    --transition-fast: 0.2s ease;
-    --transition-normal: 0.3s ease;
-    --transition-slow: 0.5s ease;
+    /* Minimal transitions */
+    --transition: 0.2s ease;
 }
 
 /* Light theme */
@@ -82,7 +80,7 @@ body {
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
     z-index: 1000;
-    transition: var(--transition-normal);
+    transition: var(--transition);
 }
 
 .nav-container {
@@ -103,7 +101,7 @@ body {
     font-weight: 600;
     color: var(--text-primary);
     text-decoration: none;
-    transition: var(--transition-fast);
+    transition: var(--transition);
     cursor: pointer;
 }
 
@@ -135,7 +133,7 @@ body {
     text-decoration: none;
     font-family: var(--font-mono);
     font-size: 0.9rem;
-    transition: var(--transition-fast);
+    transition: var(--transition);
     position: relative;
 }
 
@@ -147,7 +145,7 @@ body {
     width: 0;
     height: 2px;
     background: var(--accent-primary);
-    transition: var(--transition-fast);
+    transition: var(--transition);
 }
 
 .nav-link:hover {
@@ -165,7 +163,7 @@ body {
     padding: 0.5rem;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: var(--transition-fast);
+    transition: var(--transition);
 }
 
 .theme-toggle:hover {
@@ -189,7 +187,7 @@ body {
     width: 1.5rem;
     height: 2px;
     background: var(--text-primary);
-    transition: var(--transition-fast);
+    transition: var(--transition);
     border-radius: 1px;
 }
 
@@ -211,18 +209,7 @@ body {
     overflow: hidden;
 }
 
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 20% 50%, var(--shadow-color) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(0, 102, 255, 0.1) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 0;
-}
+
 
 .hero-content {
     display: grid;
@@ -239,25 +226,7 @@ body {
     line-height: 1.1;
     margin-bottom: 1rem;
     font-family: var(--font-mono);
-    min-height: 2.2em;
-    display: flex;
-    align-items: flex-start;
-}
-
-.typing-text {
     color: var(--accent-primary);
-    min-width: 20ch;
-    display: inline-block;
-}
-
-.cursor {
-    color: var(--accent-primary);
-    animation: blink 1s infinite;
-}
-
-@keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
 }
 
 .hero-subtitle {
@@ -287,7 +256,7 @@ body {
     font-weight: 500;
     font-family: var(--font-mono);
     font-size: 0.9rem;
-    transition: var(--transition-normal);
+    transition: var(--transition);
     cursor: pointer;
     border: none;
     display: inline-flex;
@@ -302,8 +271,6 @@ body {
 
 .btn-primary:hover {
     background: #00cc6a;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px var(--shadow-color);
 }
 
 .btn-secondary {
@@ -315,7 +282,6 @@ body {
 .btn-secondary:hover {
     background: var(--accent-primary);
     color: var(--bg-primary);
-    transform: translateY(-2px);
 }
 
 /* Terminal Window */
@@ -458,7 +424,7 @@ section {
     font-size: 0.8rem;
     color: var(--text-secondary);
     text-align: center;
-    transition: var(--transition-fast);
+    transition: var(--transition);
     word-wrap: break-word;
     hyphens: auto;
 }
@@ -466,7 +432,6 @@ section {
 .tech-item:hover {
     border-color: var(--accent-primary);
     color: var(--accent-primary);
-    transform: translateY(-2px);
 }
 
 .image-container {
@@ -626,7 +591,7 @@ section {
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     overflow: hidden;
-    transition: var(--transition-normal);
+    transition: var(--transition);
 }
 
 .project-card:hover {
@@ -652,7 +617,7 @@ section {
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: var(--transition-normal);
+    transition: var(--transition);
 }
 
 .project-card:hover .project-overlay {
@@ -671,7 +636,7 @@ section {
     border-radius: var(--border-radius);
     color: var(--text-primary);
     text-decoration: none;
-    transition: var(--transition-fast);
+    transition: var(--transition);
 }
 
 .project-link:hover {
@@ -791,15 +756,13 @@ section {
     border-radius: var(--border-radius);
     color: var(--text-primary);
     text-decoration: none;
-    transition: var(--transition-normal);
+    transition: var(--transition);
     min-width: 250px;
     justify-content: flex-start;
 }
 
 .contact-link:hover {
     border-color: var(--accent-primary);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px var(--shadow-color);
 }
 
 .contact-link svg {
@@ -825,7 +788,7 @@ section {
     color: var(--text-tertiary);
     text-decoration: none;
     font-family: var(--font-mono);
-    transition: var(--transition-fast);
+    transition: var(--transition);
 }
 
 .footer-links a:hover {
@@ -851,7 +814,7 @@ section {
         gap: 1rem;
         transform: translateY(-100%);
         opacity: 0;
-        transition: var(--transition-normal);
+        transition: var(--transition);
         z-index: 1000;
     }
     
