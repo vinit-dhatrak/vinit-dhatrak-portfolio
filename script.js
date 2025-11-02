@@ -226,25 +226,37 @@ function updateActiveNavLink() {
 // Smooth scrolling
 function initializeSmoothScrolling() {
     // This logic should only apply to the main lessons page
-    if (!document.querySelector('.course-container')) {
-        // On the 'About Me' page, we want default link behavior
-        return;
+    if (document.querySelector('.course-container')) {
+        // Handle internal anchor links on the lessons page (e.g., hero button)
+        $$('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = $(targetId);
+                if(targetElement) {
+                    const offsetTop = targetElement.offsetTop - 80; // Account for fixed nav
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
     }
 
-    // Handle navigation links within the lessons page (e.g., hero button)
-    $$('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = $(targetId);
-            if(targetElement) {
-                const offsetTop = targetElement.offsetTop - 80; // Account for fixed nav
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-            }
-        });
+    // Handle main navigation links separately for multi-page behavior
+    $$('.nav-link').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === 'index.html') {
+            link.addEventListener('click', (e) => {
+                // If we are already on the main page, scroll to top. Otherwise, allow default navigation.
+                if (window.location.pathname.endsWith('/') || window.location.pathname.endsWith('index.html')) {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        }
+        // The "About Me" link will now use its default behavior without interference.
     });
     
     // Handle logo click
