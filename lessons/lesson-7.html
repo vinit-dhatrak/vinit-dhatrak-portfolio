@@ -1,0 +1,53 @@
+<section id="lesson-7" class="lesson">
+    <h2>Lesson 7: The Multi-Layer Perceptron (MLP)</h2>
+    <h3>Objectives</h3>
+    <ul>
+        <li>Understand the architecture of a <strong>Multi-Layer Perceptron (MLP)</strong>.</li>
+        <li>Learn the terminology: input, hidden, and output layers.</li>
+        <li>Implement the full <strong>forward pass</strong> for a 2-layer MLP.</li>
+    </ul>
+    <h3>Theory</h3>
+    <p>An MLP is a network of neurons organized into layers. The <strong>Input Layer</strong> receives data, one or more <strong>Hidden Layers</strong> perform intermediate computations, and the <strong>Output Layer</strong> produces the final prediction. Information flows from the input, through the hidden layers, to the output in a **feedforward** manner.</p>
+    <p>For XOR, we can use a `2-2-1` architecture: 2 input nodes, 2 neurons in a hidden layer, and 1 neuron in the output layer. Each hidden neuron learns a simple pattern, and the output neuron combines these patterns to solve the complex, non-linear problem.</p>
+    <h3>Code Example</h3>
+    <p>This program demonstrates the forward pass of an MLP. We manually set the weights to values known to solve XOR to prove that the architecture is capable of solving the problem, before we learn how to train it.</p>
+    <div class="code-block-wrapper">
+        <button class="copy-code-btn">Copy</button>
+        <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+
+double sigmoid(double x) { return 1.0 / (1.0 + std::exp(-x)); }
+
+struct Neuron {
+    std::vector&lt;double&gt; weights;
+    double bias;
+    double forward(const std::vector&lt;double&gt;& inputs) {
+        double z = bias;
+        for (size_t i = 0; i < weights.size(); ++i) z += weights[i] * inputs[i];
+        return sigmoid(z);
+    }
+};
+
+int main() {
+    std::vector&lt;std::vector&lt;double&gt;&gt; X = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
+    
+    // Hidden Layer
+    Neuron h1 = {{10.0, 10.0}, -5.0}; // OR gate
+    Neuron h2 = {{-10.0, -10.0}, 15.0}; // NAND gate
+    
+    // Output Layer
+    Neuron o1 = {{10.0, 10.0}, -15.0}; // AND gate
+
+    for (const auto& input : X) {
+        double h1_out = h1.forward(input);
+        double h2_out = h2.forward(input);
+        double final_prediction = o1.forward({h1_out, h2_out});
+        std::cout &lt;&lt; "Input: (" &lt;&lt; input[0] &lt;&lt; ", " &lt;&lt; input[1] &lt;&lt; "), Prediction: " &lt;&lt; final_prediction &lt;&lt; std::endl;
+    }
+
+    return 0;
+}
+</code></pre>
+    </div>
+</section>

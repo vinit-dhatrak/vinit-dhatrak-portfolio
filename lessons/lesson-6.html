@@ -1,0 +1,62 @@
+<section id="lesson-6" class="lesson">
+    <h2>Lesson 6: The XOR Problem</h2>
+    <h3>Objectives</h3>
+    <ul>
+        <li>Understand the concept of <strong>linear separability</strong>.</li>
+        <li>Learn about the classic <strong>XOR problem</strong>.</li>
+        <li>Understand why stacking neurons into <strong>layers</strong> is necessary for non-linear problems.</li>
+        <li>Demonstrate the failure of a single neuron to solve XOR.</li>
+    </ul>
+    <h3>Theory</h3>
+    <p>A single neuron can only solve problems that are <strong>linearly separable</strong>—meaning you can separate the data points with a single straight line. The XOR (exclusive OR) problem is the classic example of a problem that is not linearly separable. You cannot draw one straight line to separate the `0`s from the `1`s in the XOR truth table.</p>
+    <p>This limitation, discovered in the 1960s, showed that simple perceptrons were not enough. The solution is to stack neurons into layers (an <strong>Input Layer</strong>, <strong>Hidden Layers</strong>, and an <strong>Output Layer</strong>), creating a Multi-Layer Perceptron (MLP) capable of learning complex, non-linear boundaries.</p>
+    <h3>Code Example</h3>
+    <p>This program proves the theory by attempting to train a single neuron on the XOR dataset. We will see that the loss gets stuck and the predictions are wrong, as it's mathematically impossible for it to succeed.</p>
+    <div class="code-block-wrapper">
+        <button class="copy-code-btn">Copy</button>
+        <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+#include &lt;random&gt;
+
+double sigmoid(double x) { return 1.0 / (1.0 + std::exp(-x)); }
+double sigmoid_derivative(double x) { return sigmoid(x) * (1.0 - sigmoid(x)); }
+
+int main() {
+    std::vector&lt;std::vector&lt;double&gt;&gt; X = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
+    std::vector&lt;double&gt; y = {0, 1, 1, 0};
+    double learning_rate = 0.1;
+    int epochs = 20000;
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution&lt;&gt; dis(-1.0, 1.0);
+    double w1 = dis(gen), w2 = dis(gen), bias = dis(gen);
+
+    for (int epoch = 0; epoch < epochs; ++epoch) {
+        double grad_w1=0, grad_w2=0, grad_bias=0;
+        for (size_t i = 0; i < X.size(); ++i) {
+            double z = (w1 * X[i][0]) + (w2 * X[i][1]) + bias;
+            double prediction = sigmoid(z);
+            double error = y[i] - prediction;
+            double error_gradient = error * sigmoid_derivative(z);
+            grad_w1 += error_gradient * X[i][0];
+            grad_w2 += error_gradient * X[i][1];
+            grad_bias += error_gradient;
+        }
+        w1 += learning_rate * (grad_w1 / X.size());
+        w2 += learning_rate * (grad_w2 / X.size());
+        bias += learning_rate * (grad_bias / X.size());
+
+        if ((epoch+1) % 4000 == 0) {
+             double total_loss = 0;
+             for (size_t i=0; i<X.size(); ++i) total_loss += std::pow(y[i] - sigmoid((w1 * X[i][0]) + (w2 * X[i][1]) + bias), 2);
+             std::cout &lt;&lt; "Epoch " &lt;&lt; epoch+1 &lt;&lt; ", Loss: " &lt;&lt; total_loss/X.size() &lt;&lt; std::endl;
+        }
+    }
+    std::cout &lt;&lt; "\nFinal prediction for (1, 0): " &lt;&lt; sigmoid((w1*1) + (w2*0) + bias) &lt;&lt; std::endl;
+    return 0;
+}
+</code></pre>
+    </div>
+</section>

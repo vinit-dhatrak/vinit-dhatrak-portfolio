@@ -1,0 +1,39 @@
+<section id="lesson-5" class="lesson">
+    <h2>Lesson 5: The Sigmoid Activation Function</h2>
+    <h3>Objectives</h3>
+    <ul>
+        <li>Understand the limitation of linear models for <strong>classification</strong> problems.</li>
+        <li>Implement the <strong>Sigmoid</strong> non-linear activation function.</li>
+        <li>Build a single neuron that acts as a binary classifier.</li>
+    </ul>
+    <h3>Theory</h3>
+    <p>Linear models can't solve classification problems where the output needs to be a probability (e.g., 0 or 1). We need to constrain the neuron's output to a `[0, 1]` range. We do this by adding an <strong>activation function</strong>.</p>
+    <p>The Sigmoid function, <code>Sigmoid(x) = 1 / (1 + e^-x)</code>, squashes any input value into a `[0, 1]` range, which we can interpret as a probability. The neuron's forward pass becomes a two-step process: <code>z = (weight * input) + bias</code>, and then `output = Sigmoid(z)`.</p>
+    <h3>Code Example</h3>
+    <p>This program builds a single sigmoid neuron to predict if a student will pass (1) or fail (0) based on hours studied. The output is a probability.</p>
+    <div class="code-block-wrapper">
+        <button class="copy-code-btn">Copy</button>
+        <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+
+double sigmoid(double x) {
+    return 1.0 / (1.0 + std::exp(-x));
+}
+
+int main() {
+    double weight = 0.8;
+    double bias = -5.0;
+
+    std::vector&lt;double&gt; hours_studied = {2, 3, 4, 5, 6, 7, 8, 9};
+
+    for (double hours : hours_studied) {
+        double z = (weight * hours) + bias;
+        double probability = sigmoid(z);
+        std::cout &lt;&lt; "Hours: " &lt;&lt; hours &lt;&lt; ", Prob(Pass): " &lt;&lt; probability &lt;&lt; std::endl;
+    }
+    return 0;
+}
+</code></pre>
+    </div>
+</section>

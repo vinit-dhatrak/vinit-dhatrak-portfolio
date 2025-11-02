@@ -1,0 +1,68 @@
+<section id="lesson-3" class="lesson">
+    <h2>Lesson 3: The Principle of Learning - Gradient Descent</h2>
+    <h3>Objectives</h3>
+    <ul>
+        <li>Understand the intuition behind <strong>Gradient Descent</strong> as minimizing the loss function.</li>
+        <li>Learn about the <strong>gradient</strong> and the <strong>learning rate</strong>.</li>
+        <li>Perform a single manual step of gradient descent to improve a model's weight.</li>
+    </ul>
+    <h3>Theory</h3>
+    <p>Gradient Descent is an algorithm to find the minimum of the loss function. Imagine being in a foggy valley (the loss function) and wanting to find the lowest point. You'd feel the ground to find the steepest downhill direction and take a step. That's gradient descent.</p>
+    <p>The <strong>gradient</strong> is a vector that points in the direction of steepest <em>ascent</em> (uphill). To go downhill, we take a step in the <strong>opposite</strong> direction of the gradient. The <strong>learning rate</strong> is a small number that controls the size of our step.</p>
+    <p>The update rule is: <code>new_weight = old_weight - (learning_rate * gradient)</code>.</p>
+    <h3>Code Example</h3>
+    <p>We'll start with a bad weight, calculate the gradient, and perform one update to show the loss decreases.</p>
+    <div class="code-block-wrapper">
+        <button class="copy-code-btn">Copy</button>
+        <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+
+// Helper to calculate MSE
+double calculate_mse(const std::vector&lt;double&gt;& predictions, const std::vector&lt;double&gt;& targets) {
+    double total_squared_error = 0.0;
+    for (size_t i = 0; i < predictions.size(); ++i) {
+        total_squared_error += std::pow(targets[i] - predictions[i], 2);
+    }
+    return total_squared_error / predictions.size();
+}
+
+int main() {
+    double weight = 0.5;
+    double bias = 5.0;
+    double learning_rate = 0.01;
+
+    std::vector&lt;double&gt; pizza_sizes = {8, 10, 12, 14, 16};
+    std::vector&lt;double&gt; actual_prices = {17, 21, 23, 25, 30};
+
+    // Calculate initial loss
+    std::vector&lt;double&gt; initial_predictions;
+    for (double size : pizza_sizes) {
+        initial_predictions.push_back((weight * size) + bias);
+    }
+    double initial_loss = calculate_mse(initial_predictions, actual_prices);
+    std::cout &lt;&lt; "Initial Loss (MSE): " &lt;&lt; initial_loss &lt;&lt; std::endl;
+
+    // Calculate the Gradient
+    double sum_for_gradient = 0.0;
+    for (size_t i = 0; i < pizza_sizes.size(); ++i) {
+        sum_for_gradient += -pizza_sizes[i] * (actual_prices[i] - initial_predictions[i]);
+    }
+    double gradient = (2.0 / pizza_sizes.size()) * sum_for_gradient;
+
+    // Update the Weight
+    double new_weight = weight - (learning_rate * gradient);
+    
+    // Calculate new loss to verify
+    std::vector&lt;double&gt; new_predictions;
+    for (double size : pizza_sizes) {
+        new_predictions.push_back((new_weight * size) + bias);
+    }
+    double new_loss = calculate_mse(new_predictions, actual_prices);
+    std::cout &lt;&lt; "New Loss (MSE) with updated weight: " &lt;&lt; new_loss &lt;&lt; std::endl;
+    
+    return 0;
+}
+</code></pre>
+    </div>
+</section>

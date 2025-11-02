@@ -1,0 +1,45 @@
+<section id="lesson-2" class="lesson">
+    <h2>Lesson 2: Measuring Error - The Loss Function</h2>
+    <h3>Objectives</h3>
+    <ul>
+        <li>Understand why we need a way to measure a model's performance.</li>
+        <li>Learn the concept of a <strong>loss function</strong>.</li>
+        <li>Implement the <strong>Mean Squared Error (MSE)</strong> for regression problems.</li>
+    </ul>
+    <h3>Theory</h3>
+    <p>A loss function compares the model's predictions to the actual, correct values (<strong>ground truth</strong>) and outputs a single number representing the model's error. The entire goal of training is to <strong>minimize the value of the loss function</strong>.</p>
+    <p>For regression, we use Mean Squared Error (MSE). The formula is: <code>MSE = (1/n) * sum((Actual - Predicted)^2)</code>. We square the error to make it positive and to penalize larger errors more heavily.</p>
+    <h3>Code Example</h3>
+    <p>We'll now compare our pizza predictor's output to the actual prices and calculate the MSE.</p>
+    <div class="code-block-wrapper">
+        <button class="copy-code-btn">Copy</button>
+        <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+
+int main() {
+    double weight = 1.5;
+    double bias = 5.0;
+
+    std::vector&lt;double&gt; pizza_sizes = {8, 10, 12, 14, 16};
+    std::vector&lt;double&gt; actual_prices = {17, 21, 23, 25, 30};
+
+    std::vector&lt;double&gt; predicted_prices;
+    for (double size : pizza_sizes) {
+        predicted_prices.push_back((weight * size) + bias);
+    }
+
+    double total_squared_error = 0.0;
+    for (size_t i = 0; i < actual_prices.size(); ++i) {
+        double error = actual_prices[i] - predicted_prices[i];
+        total_squared_error += std::pow(error, 2);
+    }
+
+    double mean_squared_error = total_squared_error / actual_prices.size();
+    std::cout &lt;&lt; "Mean Squared Error (Loss): " &lt;&lt; mean_squared_error &lt;&lt; std::endl;
+
+    return 0;
+}
+</code></pre>
+    </div>
+</section>

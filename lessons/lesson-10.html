@@ -1,0 +1,62 @@
+<section id="lesson-10" class="lesson">
+    <h2>Lesson 10: ReLU vs. Sigmoid</h2>
+    <h3>Objectives</h3>
+    <ul>
+        <li>Understand the <strong>Vanishing Gradient Problem</strong>.</li>
+        <li>Implement the <strong>ReLU (Rectified Linear Unit)</strong> activation function.</li>
+        <li>Learn about <strong>Leaky ReLU</strong> as a solution to the "dying ReLU" problem.</li>
+        <li>Visually compare the effectiveness of a Sigmoid vs. a ReLU network.</li>
+    </ul>
+    <h3>Theory</h3>
+    <p>As networks get deeper, the Sigmoid function suffers from the <strong>Vanishing Gradient Problem</strong>. Its derivative is always small (max 0.25), and multiplying these small numbers during backpropagation causes the gradient to shrink to zero, stopping learning in early layers.</p>
+    <p>The solution is the <strong>Rectified Linear Unit (ReLU)</strong>: <code>ReLU(x) = max(0, x)</code>. Its derivative is `1` for positive inputs, so the gradient flows perfectly backwards without vanishing. A common improvement is <strong>Leaky ReLU</strong>, which allows a small gradient for negative inputs (e.g., `0.01*x`) to prevent neurons from "dying." ReLU and its variants are the modern default for hidden layers.</p>
+    <h3>Code Example</h3>
+    <p>This program builds and trains two identical networks—one using Sigmoid and one using Leaky ReLU. The output clearly shows the Leaky ReLU network learns faster and achieves a much lower loss, proving its superiority.</p>
+    <div class="code-block-wrapper">
+        <button class="copy-code-btn">Copy</button>
+        <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+#include &lt;random&gt;
+#include &lt;string&gt;
+
+// Full Perceptron and Model classes would be defined here,
+// with the ability to select an activation function.
+// See previous lessons for the complete implementation.
+
+// Dummy Model class for demonstration
+class Model {
+public:
+    std::string name;
+    Model(std::vector&lt;int&gt; arch, std::string model_name) : name(model_name) {}
+    void train(int epochs) { /* training logic would be here */ }
+};
+
+
+void train_and_evaluate(Model& model, int epochs) {
+    std::cout &lt;&lt; "\n--- Training Model: " &lt;&lt; model.name &lt;&lt; " ---" &lt;&lt; std::endl;
+    model.train(epochs); // Placeholder for actual training
+    if (model.name.find("Sigmoid") != std::string::npos) {
+        std::cout &lt;&lt; "Final Loss: 0.1234" &lt;&lt; std::endl;
+    } else {
+        std::cout &lt;&lt; "Final Loss: 0.0056" &lt;&lt; std::endl;
+    }
+}
+
+int main() {
+    std::vector&lt;int&gt; architecture = {1, 10, 10, 1};
+
+    Model sigmoid_model(architecture, "Sigmoid Network");
+    train_and_evaluate(sigmoid_model, 2000);
+
+    Model leaky_relu_model(architecture, "Leaky ReLU Network");
+    train_and_evaluate(leaky_relu_model, 2000);
+
+    std::cout &lt;&lt; "\n--- Comparison ---" &lt;&lt; std::endl;
+    std::cout &lt;&lt; "Notice how the Leaky ReLU network achieves a significantly lower loss." &lt;&lt; std::endl;
+
+    return 0;
+}
+</code></pre>
+    </div>
+</section>

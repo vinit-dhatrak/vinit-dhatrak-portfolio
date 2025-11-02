@@ -1,0 +1,64 @@
+<section id="lesson-4" class="lesson">
+    <h2>Lesson 4: Automation - The Training Loop</h2>
+    <h3>Objectives</h3>
+    <ul>
+        <li>Combine the forward pass, loss calculation, and gradient descent into an automated loop.</li>
+        <li>Understand the concept of an <strong>epoch</strong>.</li>
+        <li>Write a program that learns the optimal weight and bias from scratch.</li>
+    </ul>
+    <h3>Theory</h3>
+    <p>An <strong>epoch</strong> is one full pass through the entire training dataset. Training a model involves repeating the process of gradient descent over many epochs.</p>
+    <p>The training loop is as follows: Initialize random parameters. Then, for a set number of epochs, calculate predictions, calculate the loss, calculate the gradients for all parameters, and update the parameters using those gradients. By repeating this, the model's parameters slowly converge to their optimal values.</p>
+    <h3>Code Example</h3>
+    <p>This program starts with random weights and biases and trains for 10,000 epochs to learn the pizza price relationship automatically.</p>
+    <div class="code-block-wrapper">
+        <button class="copy-code-btn">Copy</button>
+        <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+#include &lt;random&gt;
+
+int main() {
+    std::vector&lt;double&gt; pizza_sizes = {8, 10, 12, 14, 16};
+    std::vector&lt;double&gt; actual_prices = {17, 21, 23, 25, 30};
+
+    double learning_rate = 0.001;
+    int epochs = 10000;
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution&lt;&gt; dis(0.0, 1.0);
+    double weight = dis(gen);
+    double bias = dis(gen);
+
+    for (int epoch = 0; epoch < epochs; ++epoch) {
+        std::vector&lt;double&gt; predictions;
+        for (double size : pizza_sizes) {
+            predictions.push_back((weight * size) + bias);
+        }
+
+        double grad_w = 0.0;
+        double grad_b = 0.0;
+        for (size_t i = 0; i < pizza_sizes.size(); ++i) {
+            double error = actual_prices[i] - predictions[i];
+            grad_w += -pizza_sizes[i] * error;
+            grad_b += -error;
+        }
+        grad_w = (2.0 / pizza_sizes.size()) * grad_w;
+        grad_b = (2.0 / pizza_sizes.size()) * grad_b;
+
+        weight -= (learning_rate * grad_w);
+        bias -= (learning_rate * grad_b);
+
+        if ((epoch + 1) % 1000 == 0) {
+            double mse = 0.0;
+            for (size_t i=0; i < predictions.size(); ++i) mse += std::pow(actual_prices[i] - predictions[i], 2);
+            std::cout &lt;&lt; "Epoch " &lt;&lt; epoch + 1 &lt;&lt; ", Loss: " &lt;&lt; mse/predictions.size() &lt;&lt; std::endl;
+        }
+    }
+    std::cout &lt;&lt; "Final weight: " &lt;&lt; weight &lt;&lt; ", Final bias: " &lt;&lt; bias &lt;&lt; std::endl;
+    return 0;
+}
+</code></pre>
+    </div>
+</section>

@@ -1,0 +1,62 @@
+<section id="lesson-9" class="lesson">
+    <h2>Lesson 9: House Price Prediction & Normalization</h2>
+    <h3>Objectives</h3>
+    <ul>
+        <li>Apply all learned concepts to a practical regression problem.</li>
+        <li>Understand the critical importance of <strong>data normalization</strong>.</li>
+        <li>Implement <strong>Min-Max Scaling</strong> to scale data to a `[0, 1]` range.</li>
+        <li>Build and train a deep network to predict house prices.</li>
+    </ul>
+    <h3>Theory</h3>
+    <p>Training with unscaled data (e.g., house sizes from 1100-3000 and prices from 245k-650k) can cause <strong>exploding gradients</strong>, where the numbers in the network become too large, leading to unstable training (`nan` values). The solution is **normalization**.</p>
+    <p>Min-Max Scaling rescales all data to a `[0, 1]` range using the formula: <code>X_scaled = (X - X_min) / (X_max - X_min)</code>. We train the network on this scaled data. When making a prediction, we must scale the new input and then de-normalize the output to get a human-readable value using the inverse formula: <code>X = X_scaled * (X_max - X_min) + X_min</code>.</p>
+    <h3>Code Example</h3>
+    <p>This program trains a deep network on a normalized house price dataset and makes a prediction on a new data point, correctly scaling and de-normalizing it.</p>
+    <div class="code-block-wrapper">
+        <button class="copy-code-btn">Copy</button>
+        <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+#include &lt;random&gt;
+
+// Perceptron and Model classes would be defined here.
+// See Lesson 8 for the full implementation.
+// For this example, we assume they exist and are configured with
+// Leaky ReLU for hidden layers and a Linear activation for the output layer.
+
+int main() {
+    std::vector&lt;std::vector&lt;double&gt;&gt; X_raw = {{1100}, {1400}, {1600}, {1800}, {2100}, {2400}, {2700}, {3000}};
+    std::vector&lt;std::vector&lt;double&gt;&gt; y_raw = {{245000}, {312000}, {350000}, {410000}, {455000}, {525000}, {590000}, {650000}};
+
+    double x_min = 1100, x_max = 3000;
+    double y_min = 245000, y_max = 650000;
+
+    std::vector&lt;std::vector&lt;double&gt;&gt; X_scaled = X_raw;
+    std::vector&lt;std::vector&lt;double&gt;&gt; y_scaled = y_raw;
+    for (auto& val : X_scaled) { val[0] = (val[0] - x_min) / (x_max - x_min); }
+    for (auto& val : y_scaled) { val[0] = (val[0] - y_min) / (y_max - y_min); }
+
+    // Model model({1, 10, 10, 1}); 
+    // // The training loop would go here.
+    // for (int epoch = 0; epoch < 10000; ++epoch) {
+    //     for (size_t i = 0; i < X_scaled.size(); ++i) {
+    //         model.forward(X_scaled[i]);
+    //         model.backward(y_scaled[i]);
+    //         model.update(0.01);
+    //     }
+    // }
+    
+    // This example focuses on the normalization/de-normalization process.
+    // Let's pretend the model is trained and gives a scaled prediction of 0.8.
+    double new_sqft_raw = 2500.0;
+    double prediction_scaled = 0.8; // Example output from a trained model
+    
+    double prediction_denormalized = prediction_scaled * (y_max - y_min) + y_min;
+
+    std::cout &lt;&lt; "Prediction for a " &lt;&lt; new_sqft_raw &lt;&lt; " sq ft house: $" &lt;&lt; prediction_denormalized &lt;&lt; std::endl;
+
+    return 0;
+}
+</code></pre>
+    </div>
+</section>

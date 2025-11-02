@@ -1,0 +1,138 @@
+<section id="lesson-8" class="lesson">
+    <h2>Lesson 8: Backpropagation</h2>
+    <h3>Objectives</h3>
+    <ul>
+        <li>Understand the high-level concept of <strong>Backpropagation</strong>.</li>
+        <li>Learn about the <strong>Chain Rule</strong> as its mathematical foundation.</li>
+        <li>Implement a complete, trainable MLP that solves XOR from scratch.</li>
+    </ul>
+    <h3>Theory</h3>
+    <p><strong>Backpropagation</strong> is the algorithm used to calculate the gradients for every parameter in the network, allowing it to learn. It works by "assigning blame" for the final error, propagating it backward from the output layer.</p>
+    <p>The process, powered by the calculus chain rule, is: 1) Perform a forward pass. 2) Calculate the error signal (<code>delta</code>) for the output layer neurons. 3) Propagate that error backward to calculate the <code>delta</code> for the hidden layer neurons. 4) Use these <code>deltas</code> to calculate the gradients for all weights and biases and perform a gradient descent update.</p>
+    <h3>Code Example</h3>
+    <p>This is the complete system. We build a <code>Model</code> class that handles the forward pass, backpropagation, and update steps, and we watch it learn to solve XOR from a random initialization.</p>
+    <div class="code-block-wrapper">
+        <button class="copy-code-btn">Copy</button>
+        <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;cmath&gt;
+#include &lt;random&gt;
+
+class Perceptron {
+public:
+    std::vector&lt;double&gt; weights;
+    double bias;
+    double output;
+    double delta;
+    std::vector&lt;double&gt; last_inputs;
+
+    Perceptron(int num_inputs) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution&lt;&gt; dis(-1.0, 1.0);
+        for (int i = 0; i < num_inputs; ++i) {
+            weights.push_back(dis(gen));
+        }
+        bias = dis(gen);
+    }
+
+    double sigmoid(double x) { return 1.0 / (1.0 + std::exp(-x)); }
+    double sigmoid_derivative(double x) { return x * (1.0 - x); }
+
+    double forward(const std::vector&lt;double&gt;& inputs) {
+        last_inputs = inputs;
+        double sum = bias;
+        for (size_t i = 0; i < weights.size(); ++i) {
+            sum += inputs[i] * weights[i];
+        }
+        output = sigmoid(sum);
+        return output;
+    }
+};
+
+using Layer = std::vector&lt;Perceptron&gt;;
+
+class Model {
+public:
+    std::vector&lt;Layer&gt; layers;
+
+    Model(const std::vector&lt;int&gt;& layer_sizes) {
+        for (size_t i = 0; i < layer_sizes.size() - 1; ++i) {
+            layers.emplace_back();
+            int num_inputs = layer_sizes[i];
+            for (int j = 0; j < layer_sizes[i + 1]; ++j) {
+                layers.back().emplace_back(num_inputs);
+            }
+        }
+    }
+
+    std::vector&lt;double&gt; forward(const std::vector&lt;double&gt;& inputs) {
+        std::vector&lt;double&gt; current_inputs = inputs;
+        for (auto& layer : layers) {
+            std::vector&lt;double&gt; next_inputs;
+            for (auto& perceptron : layer) {
+                next_inputs.push_back(perceptron.forward(current_inputs));
+            }
+            current_inputs = next_inputs;
+        }
+        return current_inputs;
+    }
+
+    void backward(const std::vector&lt;double&gt;& targets) {
+        Layer& output_layer = layers.back();
+        for (size_t i = 0; i < output_layer.size(); ++i) {
+            double error = targets[i] - output_layer[i].output;
+            output_layer[i].delta = error * output_layer[i].sigmoid_derivative(output_layer[i].output);
+        }
+
+        for (int i = layers.size() - 2; i >= 0; --i) {
+            Layer& hidden_layer = layers[i];
+            Layer& next_layer = layers[i + 1];
+            for (size_t j = 0; j < hidden_layer.size(); ++j) {
+                double error = 0.0;
+                for (const auto& perceptron : next_layer) {
+                    error += perceptron.weights[j] * perceptron.delta;
+                }
+                hidden_layer[j].delta = error * hidden_layer[j].sigmoid_derivative(hidden_layer[j].output);
+            }
+        }
+    }
+
+    void update(double learning_rate) {
+        for (auto& layer : layers) {
+            for (auto& perceptron : layer) {
+                for (size_t i = 0; i < perceptron.weights.size(); ++i) {
+                    perceptron.weights[i] += learning_rate * perceptron.delta * perceptron.last_inputs[i];
+                }
+                perceptron.bias += learning_rate * perceptron.delta;
+            }
+        }
+    }
+};
+
+int main() {
+    std::vector&lt;std::vector&lt;double&gt;&gt; X = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
+    std::vector&lt;std::vector&lt;double&gt;&gt; y = {{0}, {1}, {1}, {0}};
+
+    Model model({2, 2, 1});
+
+    int epochs = 30000;
+    double learning_rate = 0.1;
+
+    for (int epoch = 0; epoch < epochs; ++epoch) {
+        for (size_t i = 0; i < X.size(); ++i) {
+            model.forward(X[i]);
+            model.backward(y[i]);
+            model.update(learning_rate);
+        }
+    }
+
+    for (size_t i = 0; i < X.size(); ++i) {
+        std::vector&lt;double&gt; prediction = model.forward(X[i]);
+        std::cout &lt;&lt; "Input: (" &lt;&lt; X[i][0] &lt;&lt; ", " &lt;&lt; X[i][1] &lt;&lt; "), Pred: " &lt;&lt; (prediction[0] > 0.5 ? 1 : 0) &lt;&lt; std::endl;
+    }
+    return 0;
+}
+</code></pre>
+    </div>
+</section>

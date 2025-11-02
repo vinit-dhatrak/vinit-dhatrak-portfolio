@@ -795,6 +795,169 @@ section {
     color: var(--accent-primary);
 }
 
+/* --- New Styles for Course Layout --- */
+.course-container {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    gap: 2rem;
+}
+
+.course-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+}
+
+.sidebar-nav {
+    position: sticky;
+    top: 6rem; /* (4rem nav height + 2rem padding) */
+    height: calc(100vh - 8rem);
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.sidebar-nav h3 {
+    font-size: 1.2rem;
+    color: var(--accent-primary);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-nav li a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    border-left: 2px solid transparent;
+}
+
+.sidebar-nav li a:hover {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+.sidebar-nav li a.active {
+    background-color: var(--bg-secondary);
+    color: var(--accent-primary);
+    border-left: 2px solid var(--accent-primary);
+    font-weight: 500;
+}
+
+.course-content {
+    flex-grow: 1;
+    min-width: 0; /* Prevents flexbox overflow */
+}
+
+.lesson {
+    margin-bottom: 6rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.lesson:first-child {
+    padding-top: 0;
+    border-top: none;
+}
+
+.lesson h2 {
+    font-size: 2rem;
+    color: var(--accent-primary);
+    margin-bottom: 1rem;
+    font-family: var(--font-mono);
+}
+
+.lesson h3 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.lesson p, .lesson li {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.lesson ul {
+    padding-left: 1.5rem;
+}
+
+.lesson strong {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Code Block Styles */
+.code-block-wrapper {
+    position: relative;
+    margin: 2rem 0;
+}
+
+pre {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.copy-code-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.25rem 0.5rem;
+    border-radius: calc(var(--border-radius) / 2);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    opacity: 0.6;
+    transition: var(--transition);
+}
+
+.copy-code-btn:hover {
+    opacity: 1;
+    background-color: var(--accent-primary);
+    color: var(--bg-primary);
+}
+
+/* Responsive adjustments for course layout */
+@media (max-width: 1024px) {
+    .course-container {
+        flex-direction: column;
+    }
+    .course-sidebar {
+        width: 100%;
+    }
+    .sidebar-nav {
+        position: static;
+        height: auto;
+        overflow-y: visible;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 1rem;
+        margin-bottom: 2rem;
+    }
+}
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
     :root {

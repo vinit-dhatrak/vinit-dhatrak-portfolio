@@ -1,0 +1,47 @@
+<section id="lesson-1" class="lesson">
+    <h2>Lesson 1: The Simplest Neuron</h2>
+    <h3>Objectives</h3>
+    <ul>
+        <li>Understand the absolute basic components of a neuron: inputs, weights, and a bias.</li>
+        <li>Learn how a neuron combines these components to produce an output (the "forward pass").</li>
+        <li>Relate the function of a simple neuron to the familiar algebraic equation <code>y = mx + c</code>.</li>
+        <li>Write a complete C++ program to model a single neuron and make a prediction.</li>
+    </ul>
+
+    <h3>Theory</h3>
+    <p>Welcome to the heart of neural networks! At its core, a single neuron (or "perceptron") is just a simple computational unit. It's a concept you're likely already familiar with from basic algebra.</p>
+    <p>Remember the equation for a straight line? <code>y = mx + c</code>. In neural network terminology, <code>x</code> is the <strong>input</strong>, <code>m</code> becomes the <strong>weight</strong>, <code>c</code> becomes the <strong>bias</strong>, and <code>y</code> is our <strong>output</strong>.</p>
+    <p>The formula is transformed into: <code>output = (weight * input) + bias</code>. This process of taking inputs and calculating an output is called the <strong>Forward Pass</strong>.</p>
+    
+    <h3>Code Example</h3>
+    <p>This program will predict the price of a pizza based on its size. Our simple "model" has a base price (the bias) and a price per inch (the weight).</p>
+    <div class="code-block-wrapper">
+        <button class="copy-code-btn">Copy</button>
+        <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+
+// Lesson 1: The Simplest Neuron - A Manual Linear Regression Model
+
+int main() {
+    // --- 1. Define the Neuron's Parameters (Weight and Bias) ---
+    // These are the "learned" values. For this lesson, we set them manually.
+    double weight = 1.5; // The "m" in y = mx + c. Represents price per inch.
+    double bias = 5.0;   // The "c" in y = mx + c. Represents the base price.
+
+    // --- 2. Provide Input Data ---
+    std::vector&lt;double&gt; pizza_sizes = {8, 10, 12, 14, 16};
+
+    std::cout &lt;&lt; "--- Pizza Price Predictor ---" &lt;&lt; std::endl;
+    
+    // --- 3. The Forward Pass (The Core Logic) ---
+    for (double size : pizza_sizes) {
+        // The core formula: output = (weight * input) + bias
+        double predicted_price = (weight * size) + bias;
+        std::cout &lt;&lt; "  - Size: " &lt;&lt; size &lt;&lt; "\" -> Predicted Price: $" &lt;&lt; predicted_price &lt;&lt; std::endl;
+    }
+
+    return 0;
+}
+</code></pre>
+    </div>
+</section>
