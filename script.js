@@ -88,6 +88,9 @@ async function loadLesson(lessonId) {
         // Add functionality to the new copy buttons
         initializeCopyButtons();
 
+        // Tell Prism to highlight the new code blocks
+        Prism.highlightAll();
+
     } catch (error) {
         courseContent.innerHTML = `<p style="color: var(--accent-tertiary);">Error loading lesson: ${error.message}</p>`;
     }

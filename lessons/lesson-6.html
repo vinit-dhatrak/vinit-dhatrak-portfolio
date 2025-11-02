@@ -14,7 +14,7 @@
     <p>This program proves the theory by attempting to train a single neuron on the XOR dataset. We will see that the loss gets stuck and the predictions are wrong, as it's mathematically impossible for it to succeed.</p>
     <div class="code-block-wrapper">
         <button class="copy-code-btn">Copy</button>
-        <pre><code>#include &lt;iostream&gt;
+<pre><code class="language-cpp">#include &lt;iostream&gt;
 #include &lt;vector&gt;
 #include &lt;cmath&gt;
 #include &lt;random&gt;
@@ -49,9 +49,12 @@ int main() {
         bias += learning_rate * (grad_bias / X.size());
 
         if ((epoch+1) % 4000 == 0) {
-             double total_loss = 0;
-             for (size_t i=0; i<X.size(); ++i) total_loss += std::pow(y[i] - sigmoid((w1 * X[i][0]) + (w2 * X[i][1]) + bias), 2);
-             std::cout &lt;&lt; "Epoch " &lt;&lt; epoch+1 &lt;&lt; ", Loss: " &lt;&lt; total_loss/X.size() &lt;&lt; std::endl;
+            double total_loss = 0;
+            for (size_t i=0; i < X.size(); ++i) {
+                double z = (w1 * X[i][0]) + (w2 * X[i][1]) + bias;
+                total_loss += std::pow(y[i] - sigmoid(z), 2);
+            }
+            std::cout &lt;&lt; "Epoch " &lt;&lt; epoch+1 &lt;&lt; ", Loss: " &lt;&lt; total_loss/X.size() &lt;&lt; std::endl;
         }
     }
     std::cout &lt;&lt; "\nFinal prediction for (1, 0): " &lt;&lt; sigmoid((w1*1) + (w2*0) + bias) &lt;&lt; std::endl;
