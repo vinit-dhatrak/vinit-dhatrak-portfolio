@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AoC 2025 - Day 06</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+    <div class="terminal-container">
+        <header class="terminal-header">
+            <div class="terminal-title">
+                <span class="blink">></span> Day_06: Chronospatial Calibration
+            </div>
+            <div class="terminal-status">
+                <a href="../index.html" class="back-link">[..] UP DIRECTORY</a>
+            </div>
+        </header>
+
+        <main class="day-view">
+            <div class="panel">
+                <div class="panel-header">Input Stream</div>
+                <textarea id="puzzle-input" class="terminal-input"
+                    placeholder="Paste your puzzle input here..."></textarea>
+                <div style="margin-top: 1rem; text-align: right;">
+                    <button id="run-btn" class="btn-terminal">EXECUTE PROTOCOL</button>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">Visual Output</div>
+                <div id="viz-canvas" class="viz-container">
+                    <div style="color: var(--terminal-dim)">[AWAITING INPUT]</div>
+                </div>
+                <div id="output-log" class="output-log">
+                    > System ready.<br>
+                    > Waiting for user input...
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="../script.js"></script>
+</body>
+
+</html>
