@@ -3,77 +3,89 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('System Initialized. Welcome to AoC 2025.');
 
-    // Check if we are on the main dashboard or a specific day
     if (document.querySelector('.calendar-grid')) {
         initializeDashboard();
-    } else if (document.querySelector('.day-view')) {
+    } else if (document.querySelector('.day-layout')) {
         initializeDayView();
     }
 });
 
 function initializeDashboard() {
-    const grid = document.querySelector('.calendar-grid');
-    // We will generate the grid dynamically if it's empty, 
-    // but for now we might just let HTML handle it or enhance it here.
-
     const cards = document.querySelectorAll('.day-card');
     cards.forEach(card => {
         card.addEventListener('mouseenter', () => {
-            playHoverSound();
+            // Optional: hover sound effect
         });
     });
 }
 
 function initializeDayView() {
-    const runBtn = document.getElementById('run-btn');
-    const inputArea = document.getElementById('puzzle-input');
-    const outputLog = document.getElementById('output-log');
+    const runPart1 = document.getElementById('run-part1');
+    const runPart2 = document.getElementById('run-part2');
 
-    if (runBtn) {
-        runBtn.addEventListener('click', () => {
-            const input = inputArea.value;
-            if (!input.trim()) {
-                logOutput('Error: No input detected.', 'error');
-                return;
+    if (runPart1) {
+        runPart1.addEventListener('click', () => runSolver(1));
+    }
+    if (runPart2) {
+        runPart2.addEventListener('click', () => runSolver(2));
+    }
+}
+
+function runSolver(part) {
+    const input = document.getElementById('puzzle-input').value;
+    const statusLog = document.getElementById('status-log');
+    const resultBox = document.getElementById(`part${part}-result`);
+    const vizContainer = document.getElementById('viz-canvas');
+
+    if (!input.trim()) {
+        setStatus('Error: No input detected.', 'error');
+        return;
+    }
+
+    setStatus(`Running Part ${part}...`, 'info');
+
+    // Determine current day from URL
+    const path = window.location.pathname;
+    const dayMatch = path.match(/day-(\d+)/);
+    const dayId = dayMatch ? `day${dayMatch[1]}` : null;
+
+    if (dayId && window.solutions && window.solutions[dayId]) {
+        try {
+            const solver = window.solutions[dayId];
+            let result;
+
+            if (part === 1 && solver.part1) {
+                result = solver.part1(input);
+            } else if (part === 2 && solver.part2) {
+                result = solver.part2(input);
+            } else {
+                result = 'Not Implemented';
             }
 
-            logOutput('System: Processing input...', 'info');
+            resultBox.value = result;
+            setStatus(`Part ${part} complete!`, 'success');
 
-            // This is where we will hook into the specific day's solver
-            // For now, just simulate work
-            runSimulation();
-        });
+            // Start visualization if the solver supports it
+            if (solver.startVisualization && vizContainer) {
+                // Clear any existing content
+                vizContainer.innerHTML = '';
+                solver.startVisualization(vizContainer, part);
+            }
+        } catch (e) {
+            setStatus(`Error: ${e.message}`, 'error');
+            console.error(e);
+        }
+    } else {
+        setStatus(`Solver for ${dayId} not found.`, 'error');
     }
 }
 
-function logOutput(message, type = 'info') {
-    const log = document.getElementById('output-log');
-    const line = document.createElement('div');
-    line.textContent = `> ${message}`;
+function setStatus(message, type = 'info') {
+    const statusLog = document.getElementById('status-log');
+    if (!statusLog) return;
 
-    if (type === 'error') {
-        line.style.color = 'var(--terminal-alert)';
-    } else if (type === 'success') {
-        line.style.color = 'var(--terminal-text)';
-    }
-
-    log.appendChild(line);
-    log.scrollTop = log.scrollHeight;
-}
-
-function runSimulation() {
-    // Placeholder for visualization logic
-    const viz = document.getElementById('viz-canvas');
-    if (viz) {
-        viz.innerHTML = '<div class="blink">PROCESSING...</div>';
-        setTimeout(() => {
-            viz.innerHTML = '<div style="color: var(--terminal-text)">[VISUALIZATION PLACEHOLDER]</div>';
-            logOutput('Solution found: [PENDING IMPLEMENTATION]', 'success');
-        }, 1500);
-    }
-}
-
-// Optional: Sound effects for that extra retro feel
-function playHoverSound() {
-    // Placeholder for future sound implementation
+    statusLog.textContent = message;
+    statusLog.style.color = type === 'error' ? 'var(--terminal-alert)' :
+        type === 'success' ? 'var(--terminal-text)' :
+            'var(--terminal-dim)';
 }

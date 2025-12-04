@@ -9,38 +9,60 @@
 </head>
 
 <body>
-    <div class="terminal-container">
+    <div class="terminal-container day-page">
         <header class="terminal-header">
             <div class="terminal-title">
-                <span class="blink">></span> Day_20: Chronospatial Calibration
+                <span class="blink">></span> Day_20: Historian Hysteria
             </div>
-            <div class="terminal-status">
-                <a href="../index.html" class="back-link">[..] UP DIRECTORY</a>
-            </div>
+            <a href="../index.html" class="back-link">[← DASHBOARD]</a>
         </header>
 
-        <main class="day-view">
-            <div class="panel">
-                <div class="panel-header">Input Stream</div>
-                <textarea id="puzzle-input" class="terminal-input"
-                    placeholder="Paste your puzzle input here..."></textarea>
-                <div style="margin-top: 1rem; text-align: right;">
-                    <button id="run-btn" class="btn-terminal">EXECUTE PROTOCOL</button>
+        <main class="day-layout">
+            <!-- Left Panel: Input -->
+            <aside class="input-panel">
+                <div class="panel-header">
+                    <span>📥 Input</span>
                 </div>
-            </div>
+                <textarea id="puzzle-input" class="terminal-input" placeholder="Paste puzzle input..."></textarea>
+            </aside>
 
-            <div class="panel">
-                <div class="panel-header">Visual Output</div>
+            <!-- Center: Visualization (Largest) -->
+            <section class="viz-panel">
+                <div class="panel-header">
+                    <span>🖥️ Visualization</span>
+                </div>
                 <div id="viz-canvas" class="viz-container">
-                    <div style="color: var(--terminal-dim)">[AWAITING INPUT]</div>
+                    <div class="viz-placeholder">[AWAITING INPUT]</div>
                 </div>
-                <div id="output-log" class="output-log">
-                    > System ready.<br>
-                    > Waiting for user input...
+            </section>
+
+            <!-- Right Panel: Controls & Output -->
+            <aside class="output-panel">
+                <div class="panel-header">
+                    <span>📤 Results</span>
                 </div>
-            </div>
+
+                <div class="part-section">
+                    <label for="part1-result">Part 1</label>
+                    <div class="result-row">
+                        <input type="text" id="part1-result" class="result-box" readonly placeholder="—">
+                        <button id="run-part1" class="btn-run">RUN</button>
+                    </div>
+                </div>
+
+                <div class="part-section">
+                    <label for="part2-result">Part 2</label>
+                    <div class="result-row">
+                        <input type="text" id="part2-result" class="result-box" readonly placeholder="—">
+                        <button id="run-part2" class="btn-run">RUN</button>
+                    </div>
+                </div>
+
+                <div id="status-log" class="status-log">Ready.</div>
+            </aside>
         </main>
     </div>
+    <script src="../solutions/day20.js"></script>
     <script src="../script.js"></script>
 </body>
 

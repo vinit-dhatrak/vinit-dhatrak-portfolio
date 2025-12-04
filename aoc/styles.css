@@ -1,9 +1,11 @@
 /* Terminal / Cyberpunk Theme Variables */
 :root {
     --terminal-bg: #0d0d0d;
-    --terminal-text: #00ff41; /* Classic Matrix Green */
+    --terminal-text: #00ff41;
+    /* Classic Matrix Green */
     --terminal-dim: #008f11;
-    --terminal-alert: #ff0055; /* Cyberpunk Red/Pink */
+    --terminal-alert: #ff0055;
+    /* Cyberpunk Red/Pink */
     --terminal-glow: 0 0 10px rgba(0, 255, 65, 0.5);
     --scanline-color: rgba(0, 0, 0, 0.5);
     --font-mono: 'Courier New', Courier, monospace;
@@ -34,11 +36,9 @@ body::before {
     left: 0;
     bottom: 0;
     right: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(18, 16, 16, 0) 50%,
-        rgba(0, 0, 0, 0.25) 50%
-    );
+    background: linear-gradient(to bottom,
+            rgba(18, 16, 16, 0) 50%,
+            rgba(0, 0, 0, 0.25) 50%);
     background-size: 100% 4px;
     z-index: 999;
     pointer-events: none;
@@ -79,8 +79,15 @@ body::before {
 }
 
 @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
 }
 
 /* Grid / Calendar */
@@ -129,60 +136,146 @@ body::before {
     color: #555;
 }
 
-/* Day Detail View */
-.day-view {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    height: 80vh;
+/* Day Detail View - 3 Column Layout */
+.day-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.panel {
+.day-layout {
+    display: grid;
+    grid-template-columns: 250px 1fr 280px;
+    gap: 1rem;
+    flex: 1;
+    min-height: 0;
+}
+
+.input-panel,
+.viz-panel,
+.output-panel {
     border: 1px solid var(--terminal-dim);
-    padding: 1rem;
     display: flex;
     flex-direction: column;
     background: rgba(0, 10, 0, 0.2);
+    overflow: hidden;
 }
 
 .panel-header {
     border-bottom: 1px solid var(--terminal-dim);
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
     font-weight: bold;
     text-transform: uppercase;
+    font-size: 0.85rem;
+    flex-shrink: 0;
 }
 
-textarea.terminal-input {
+/* Input Panel */
+.input-panel textarea.terminal-input {
+    flex: 1;
     width: 100%;
-    height: 100%;
     background: transparent;
     border: none;
     color: var(--terminal-text);
     font-family: var(--font-mono);
     resize: none;
     outline: none;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    padding: 0.5rem;
 }
 
-.viz-container {
-    flex-grow: 1;
+/* Visualization Panel (Largest) */
+.viz-panel {
+    min-width: 0;
+}
+
+.viz-panel .viz-container {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px dashed var(--terminal-dim);
-    margin-bottom: 1rem;
     position: relative;
-    overflow: hidden;
+    overflow: auto;
 }
 
-.output-log {
-    height: 150px;
-    border-top: 1px solid var(--terminal-dim);
-    padding-top: 0.5rem;
-    font-size: 0.85rem;
-    overflow-y: auto;
+.viz-placeholder {
     color: var(--terminal-dim);
+    font-size: 1.2rem;
+}
+
+/* Output Panel */
+.output-panel {
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.part-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.part-section label {
+    font-size: 0.9rem;
+    color: var(--terminal-dim);
+    text-transform: uppercase;
+}
+
+.result-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.result-box {
+    flex: 1;
+    background: rgba(0, 40, 0, 0.3);
+    border: 1px solid var(--terminal-dim);
+    color: var(--terminal-text);
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.result-box:focus {
+    outline: none;
+    border-color: var(--terminal-text);
+}
+
+.btn-run {
+    background: transparent;
+    border: 1px solid var(--terminal-text);
+    color: var(--terminal-text);
+    padding: 0.5rem 1rem;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    font-size: 0.8rem;
+}
+
+.btn-run:hover {
+    background: var(--terminal-text);
+    color: var(--terminal-bg);
+    box-shadow: var(--terminal-glow);
+}
+
+.status-log {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--terminal-dim);
+    font-size: 0.8rem;
+    color: var(--terminal-dim);
+}
+
+.back-link {
+    color: var(--terminal-dim);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.back-link:hover {
+    color: var(--terminal-text);
 }
 
 .btn-terminal {
